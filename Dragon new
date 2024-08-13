@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragón y Obstáculos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="dragon"></div>
+        <div class="obstacle" style="top: 50px; left: 200px;"></div>
+        <div class="obstacle" style="top: 150px; left: 400px;"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #87CEFA; /* Color de fondo del cielo */
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #228B22; /* Color de fondo del campo */
+}
+
+#dragon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('https://www.google.com/search?q=dragon+shenlong&client=ms-android-samsung-gj-rev1&sca_esv=d674af110d3d1eb5&sca_upv=1&udm=2&biw=384&bih=726&sxsrf=ADLYWIIFyxcFbIRtqbmcBXRVEfWDBQwZhA%3A1723516326208&ei=psW6ZoajDOLBp84Pl8L-gAk&oq=dragon+senlon&gs_lp=EhNtb2JpbGUtZ3dzLXdpei1zZXJwIg1kcmFnb24gc2VubG9uKgIIADIHEAAYgAQYDTIHEAAYgAQYDTIHEAAYgAQYDTIHEAAYgAQYDTIHEAAYgAQYDUiOfVCNCliUaHACeACQAQCYAacDoAHqDaoBCTEuNi4yLjAuMbgBAcgBAPgBAZgCDKACxg_CAgQQIxgnwgIEEAAYA8ICDRAAGIAEGLEDGEMYigXCAgoQABiABBhDGIoFwgIIEAAYgAQYsQPCAgUQABiABMICBhAAGAgYHsICCRAAGIAEGBgYCsICCBAAGIAEGKIEwgIJEAAYgAQYExgNwgIKEAAYExgFGA0YHsICChAAGBMYCBgNGB7CAggQABgTGAgYHpgDAIgGAZIHCTIuNy4yLjAuMaAH8h8&sclient=mobile-gws-wiz-serp#vhid=W42bPUhf2U5QoM&vssid=mosaic') no-repeat center center;
+    background-size: cover;
+    top: 50%;
+    left: 10%;
+}
+
+.obstacle {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #8B0000; /* Color de los obstáculos */
+    border-radius: 50%;
+}const dragon = document.getElementById('dragon');
+const obstacles = document.querySelectorAll('.obstacle');
+
+document.addEventListener('keydown', (event) => {
+    const step = 10; // Cantidad de movimiento en píxeles
+    let top = parseInt(window.getComputedStyle(dragon).top, 10);
+    let left = parseInt(window.getComputedStyle(dragon).left, 10);
+
+    switch(event.key) {
+        case 'ArrowUp':
+            dragon.style.top = `${top - step}px`;
+            break;
+        case 'ArrowDown':
+            dragon.style.top = `${top + step}px`;
+            break;
+        case 'ArrowLeft':
+            dragon.style.left = `${left - step}px`;
+            break;
+        case 'ArrowRight':
+            dragon.style.left = `${left + step}px`;
+            break;
+    }
+
+    checkCollision();
+});
+
+function checkCollision() {
+    const dragonRect = dragon.getBoundingClientRect();
+    obstacles.forEach(obstacle => {
+        const obstacleRect = obstacle.getBoundingClientRect();
+        if (dragonRect.left < obstacleRect.right &&
+            dragonRect.right > obstacleRect.left &&
+            dragonRect.top < obstacleRect.bottom &&
+            dragonRect.bottom > obstacleRect.top) {
+            alert('¡Colisión detectada!');
+        }
+    });
+}
